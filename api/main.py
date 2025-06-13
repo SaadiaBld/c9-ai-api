@@ -10,8 +10,8 @@ import os
 load_dotenv()
 
 # Lecture des identifiants depuis .env
-API_USER = os.getenv("API_USER", "admin")
-API_PASS = os.getenv("API_PASS", "verbatim123")
+API_USER = os.getenv("API_USER")
+API_PASS = os.getenv("API_PASS")
 
 security = HTTPBasic()
 app = FastAPI()
@@ -25,9 +25,14 @@ def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
     correct_password = secrets.compare_digest(credentials.password, API_PASS)
 
     if not (correct_username and correct_password):
-        raise HTTPException(status_code=401, detail="Identifiants invalides")
+        raise HTTPException(
+            status_code=401,
+            detail="Identifiants invalides",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+
     
-    return credentials.username  # Peut être utilisé dans les logs si besoin
+    return credentials.username 
 
 
 @app.get("/")
