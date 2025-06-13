@@ -27,7 +27,7 @@ ai_verbatim_api_starter/
 │ │ └── themes.py # Liste des thèmes et labels autorisés
 ├── tests/
 │ └── test_main.py # Suite de tests unitaires
-├── .env # Clé API Anthropic + identifiants
+├── .env # Clé API + identifiants
 ├── requirements.txt
 ├── run_tests.sh # Script pour exécuter les tests
 └── README.md
