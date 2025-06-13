@@ -16,6 +16,7 @@ API REST développée avec **FastAPI** permettant d’analyser automatiquement d
 
 ## Arborescence
 
+```bash
 ai_verbatim_api_starter/
 ├── api/
 │ ├── main.py # Point d'entrée FastAPI
@@ -30,7 +31,7 @@ ai_verbatim_api_starter/
 ├── requirements.txt
 ├── run_tests.sh # Script pour exécuter les tests
 └── README.md
-
+```
 
 ---
 
@@ -50,13 +51,13 @@ python -m venv venv
 source venv/bin/activate
 ```
 
-2. **Installer les dépendances :** :
+3. **Installer les dépendances :** :
 
 ```bash
 pip install -r requirements.txt
 ```
 
-2. **Configurer les variables d'environnement dans .env à la racine :** :
+4. **Configurer les variables d'environnement dans .env à la racine :** :
 
 ```bash
 API_KEY=sk-...                   # clé pour appeler le llm
@@ -67,7 +68,7 @@ API_PASS=mon_mot_de_passe
 
 ## Lancer l'API
 
-2. **Configurer les variables d'environnement dans .env à la racine :** :
+1. **Configurer les variables d'environnement dans .env à la racine :** :
 
 Depuis la racine du projet :
 
