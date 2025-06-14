@@ -47,6 +47,7 @@ def classify_with_claude(verbatim: str) -> list[dict] | None:
         validated = validate_claude_response(content)
         if not validated:
             logger.warning(f"❌ Réponse non valide : {content}")
+            return []
         return validated
 
     except Exception as e:
@@ -85,8 +86,8 @@ def validate_claude_response(response_text: str) -> list[dict] | None:
 
             results.append({"theme": theme, "note": note})
 
-        return results if results else None
+        return results
 
     except json.JSONDecodeError as e:
         logger.error(f"Erreur JSON : {e} dans : {response_text}")
-        raise ValueError("Réponse Claude invalide")
+        return []

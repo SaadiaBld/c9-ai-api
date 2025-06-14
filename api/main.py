@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi.responses import JSONResponse
 from .models import VerbatimRequest, VerbatimResponse
 from .claude.claude_interface import classify_with_claude
 from dotenv import load_dotenv
@@ -23,16 +24,18 @@ def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
     """
     correct_username = secrets.compare_digest(credentials.username, API_USER)
     correct_password = secrets.compare_digest(credentials.password, API_PASS)
+    print(f"[CONFIG] API_USER = {API_USER}")
+    print(f"[CONFIG] API_PASS = {API_PASS}")
 
     if not (correct_username and correct_password):
+    #if not credentials.username or not credentials.password:
         raise HTTPException(
             status_code=401,
             detail="Identifiants invalides",
             headers={"WWW-Authenticate": "Basic"},
         )
-
-    
-    return credentials.username 
+    print(f"[DEBUG] Appel authenticate avec : {credentials.username}")
+    return credentials.username
 
 
 @app.get("/")
@@ -47,13 +50,16 @@ def analyze_text(
 ):
     """
     Analyse un verbatim client et retourne les thèmes détectés avec leur note.
-    Nécessite une authentification via identifiant/mot de passe.
+    Retourne une réponse vide si aucun thème n’est détecté.
     """
     try:
         results = classify_with_claude(verbatim.text)
+
+        # Garantir qu'on retourne toujours un VerbatimResponse
         if results is None:
-            raise HTTPException(status_code=500, detail="Échec de l’analyse.")
+            results = []
+
         return VerbatimResponse(themes=results)
-    
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur inattendue : {str(e)}")
